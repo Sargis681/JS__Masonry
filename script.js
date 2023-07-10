@@ -1,8 +1,8 @@
-function MasonryPrototype() {
+function GamePrototype() {
   this.columnHeights = [];
 }
 
-MasonryPrototype.prototype.render = function (containerClass, settings) {
+GamePrototype.prototype.render = function (containerClass, settings) {
   const container = document.querySelector(containerClass);
 
   const columnWidth = settings.columnWidth;
@@ -79,7 +79,7 @@ MasonryPrototype.prototype.render = function (containerClass, settings) {
   positionItems();
 };
 
-const masonry = new MasonryPrototype();
+const masonry = new GamePrototype();
 
 window.addEventListener("DOMContentLoaded", function rend() {
   masonry.render(".masonry", {
