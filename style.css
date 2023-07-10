@@ -1,22 +1,24 @@
-.masonry{
+.masonry {
     /* display: grid;  */
     /* grid-template-columns:auto auto auto auto ; */
 
- /* display: flex;  */
-/* flex-wrap: wrap;  */
-display: flex;
-flex-direction: column;
-flex-wrap: wrap;
-max-height: 1000px;
+    /* display: flex;  */
+    /* flex-wrap: wrap;  */
+    /* display: flex; */
+    /* flex-direction: column; */
+    flex-wrap: wrap;
+    max-height: 1000px;
 
 }
-.masonry__image{
-    /* width: 200px; */
-    margin: 0 ;
+
+.masonry__image {
+    width: 200px;
+    margin: 0;
     padding: 0;
-    
+
 }
-.masonry__item{
+
+.masonry__item {
     flex: 1 0 auto;
     text-align: center;
     list-style-type: none;

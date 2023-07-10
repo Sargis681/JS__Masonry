@@ -2,19 +2,17 @@ function MasonryPrototype() {
   this.columnHeights = [];
 }
 
-MasonryPrototype.prototype.render = function(containerClass, settings) {
+MasonryPrototype.prototype.render = function (containerClass, settings) {
   const container = document.querySelector(containerClass);
-  if (!container) {
-    return;
-  }
 
-  const columnWidth = settings.columnWidth || 200;
-  const columnHeight = settings.columnHeight || 150;
+  const columnWidth = settings.columnWidth;
+  const columnHeight = settings.columnHeight;
   const autoResize = settings.autoResize || false;
-  const gap = 5;
+  const gap = 2;
 
   const positionItems = () => {
     const containerWidth = container.offsetWidth;
+
     const columns = Math.floor(containerWidth / (columnWidth + gap));
     const paddingInline = autoResize
       ? 0
@@ -28,6 +26,8 @@ MasonryPrototype.prototype.render = function(containerClass, settings) {
     `;
 
     const items = container.children;
+    // console.log(items.firstElementChild);
+
     const itemCount = items.length;
     const itemsPerColumn = Math.ceil(itemCount / columns);
     // console.log(`Total items: ${itemCount}`);
@@ -40,7 +40,7 @@ MasonryPrototype.prototype.render = function(containerClass, settings) {
       const columnIndex = i % columns;
       columnCounts[columnIndex]++;
     }
-    console.log(items);
+    // console.log(items);
 
     this.columnHeights = Array(columns).fill(0); // Reset column heights array
 
@@ -52,37 +52,38 @@ MasonryPrototype.prototype.render = function(containerClass, settings) {
 
     // Log the sum of each column's height
     for (let i = 0; i < columns; i++) {
-      console.log(`Column ${i + 1} sum: ${this.columnHeights[i]}`);
+      // console.log(`Column ${i + 1} sum: ${this.columnHeights[i]}`);
     }
-    let largestNumber =  Math.max(...this.columnHeights) 
+    let largestNumber = Math.max(...this.columnHeights);
     console.log(largestNumber);
 
-    // Log the column number for each image
-    const columnImages = document.querySelectorAll('.masonry img');
+    const columnImages = document.querySelectorAll(".masonry img");
     for (let i = 0; i < columnImages.length; i++) {
       const imageHeight = columnImages[i].offsetHeight;
-      const columnIndex = Math.floor(i / itemsPerColumn) + 1;
-      console.log(columnIndex);
-      if(i<4){
+      columnImages[i].style.height = "auto";
 
-        columnImages[i].style.height = columnImages[i].offsetHeight-70+"px"
+      const columnIndex = Math.floor(i / itemsPerColumn) + 1;
+      // console.log(columnIndex);
+      if (i < 4) {
+        columnImages[i].style.height = columnImages[i].offsetHeight + "px";
       }
       // console.log(columnIndex);
-      
-      console.log(`Image ${i + 1} is in column ${columnIndex}. Height: ${imageHeight}px`);
+
+      // console.log(
+      //   `Image ${i + 1} is in column ${columnIndex}. Height: ${imageHeight}px`
+      // );
     }
   };
 
-  positionItems();
-
   window.addEventListener("resize", positionItems);
+  positionItems();
 };
 
 const masonry = new MasonryPrototype();
 
-window.addEventListener("DOMContentLoaded", () => {
+window.addEventListener("DOMContentLoaded", function rend() {
   masonry.render(".masonry", {
     columnWidth: 200,
-    autoResize: true,
+    // autoResize: true,
   });
 });
