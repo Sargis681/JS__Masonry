@@ -1,89 +1,62 @@
-function GamePrototype() {
-  this.columnHeights = [];
-}
+function Masonry() {}
 
-GamePrototype.prototype.render = function (containerClass, settings) {
-  const container = document.querySelector(containerClass);
+Masonry.prototype.render = function (className, objectSettings) {
+  const masonry = document.querySelector(className);
+  const imgsItems = document.querySelectorAll(".masonry__item");
+  const columnWidth = objectSettings.columnWidth || 200;
+  const autoResize = objectSettings.autoResize || false;
+  const numberCol = Math.trunc(masonry.offsetWidth / columnWidth);
+  const columns = [];
 
-  const columnWidth = settings.columnWidth;
-  const columnHeight = settings.columnHeight;
-  const autoResize = settings.autoResize || false;
-  const gap = 2;
+  for (let i = 0; i < numberCol; i++) {
+    columns.push(0);
+  }
 
-  const positionItems = () => {
-    const containerWidth = container.offsetWidth;
+  for (let i = 0; i < imgsItems.length; i++) {
+    const imgItem = imgsItems[i];
+    const columnIndex = getIndex(columns);
 
-    const columns = Math.floor(containerWidth / (columnWidth + gap));
-    const paddingInline = autoResize
-      ? 0
-      : (containerWidth - columns * (columnWidth + gap)) / 2 + 50;
+    imgItem.style.left = `${columnIndex * columnWidth}px`;
+    imgItem.style.top = `${columns[columnIndex]}px`;
+    imgItem.style.width = columnWidth + "px";
+    columns[columnIndex] += imgItem.offsetHeight + 5;
+  }
 
-    container.style.cssText = `
-      columns-count: ${columns};
-      padding-inline: ${paddingInline}px;
-      column-gap: ${gap}px;
-      column-width: ${columnWidth}px;
-    `;
+  masonry.style.height = Math.max(...columns) + "px";
 
-    const items = container.children;
-    // console.log(items.firstElementChild);
-
-    const itemCount = items.length;
-    const itemsPerColumn = Math.ceil(itemCount / columns);
-    // console.log(`Total items: ${itemCount}`);
-    // console.log(`Items per column: ${itemsPerColumn}`);
-
-    // Determine the count of items in each column
-    const columnCounts = Array(columns).fill(0);
-
-    for (let i = 0; i < itemCount; i++) {
-      const columnIndex = i % columns;
-      columnCounts[columnIndex]++;
-    }
-    // console.log(items);
-
-    this.columnHeights = Array(columns).fill(0); // Reset column heights array
-
-    for (let i = 0; i < itemCount; i++) {
-      const columnIndex = i % columns;
-      const itemHeight = items[i].offsetHeight;
-      this.columnHeights[columnIndex] += itemHeight;
-    }
-
-    // Log the sum of each column's height
-    for (let i = 0; i < columns; i++) {
-      // console.log(`Column ${i + 1} sum: ${this.columnHeights[i]}`);
-    }
-    let largestNumber = Math.max(...this.columnHeights);
-    console.log(largestNumber);
-
-    const columnImages = document.querySelectorAll(".masonry img");
-    for (let i = 0; i < columnImages.length; i++) {
-      const imageHeight = columnImages[i].offsetHeight;
-      columnImages[i].style.height = "auto";
-
-      const columnIndex = Math.floor(i / itemsPerColumn) + 1;
-      // console.log(columnIndex);
-      if (i < 4) {
-        columnImages[i].style.height = columnImages[i].offsetHeight + "px";
-      }
-      // console.log(columnIndex);
-
-      // console.log(
-      //   `Image ${i + 1} is in column ${columnIndex}. Height: ${imageHeight}px`
-      // );
-    }
-  };
-
-  window.addEventListener("resize", positionItems);
-  positionItems();
+  if (autoResize) {
+    setInterval(() => {
+      this.handleResize(className, {
+        columnWidth: columnWidth,
+        autoResize: autoResize,
+      });
+    }, 0);
+  }
 };
 
-const masonry = new GamePrototype();
+function getIndex(columns) {
+  let index = 0;
+  let indexHeight = columns[0];
 
-window.addEventListener("DOMContentLoaded", function rend() {
-  masonry.render(".masonry", {
+  for (let i = 0; i < columns.length; i++) {
+    if (columns[i] <= indexHeight) {
+      index = i;
+      indexHeight = columns[i];
+    }
+  }
+
+  return index;
+}
+
+Masonry.prototype.handleResize = function (className, objectSettings) {
+  this.render(className, objectSettings);
+};
+
+const MasonryLayout = new Masonry();
+
+window.addEventListener("DOMContentLoaded", () => {
+  MasonryLayout.render(".masonry", {
     columnWidth: 200,
-    // autoResize: true,
+    autoResize: true,
   });
 });
