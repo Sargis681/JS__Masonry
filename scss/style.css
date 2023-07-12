@@ -1,17 +1,25 @@
 body {
-  background-image: url("https://htmlcolorcodes.com/assets/images/html-color-codes-color-tutorials-hero.jpg");
+  background-image: url("/images/background.jpg");
 }
+
+h1 {
+  text-align: center;
+  color: wheat;
+}
+
 body .masonry {
   position: relative;
   list-style: none;
-  margin: 0 auto;
-  max-width: 1200px;
+  /* margin: 0 auto; */
+  /* max-width: 1200px; */
   padding: 0;
 }
+
 body .masonry__item {
   position: absolute;
   width: 100%;
 }
+
 body .masonry__image {
   display: block;
   height: auto;
@@ -20,4 +28,6 @@ body .masonry__image {
 
 div {
   background-color: red;
-}/*# sourceMappingURL=style.css.map */
+}
+
+/*# sourceMappingURL=style.css.map */
