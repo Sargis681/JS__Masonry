@@ -7,7 +7,7 @@ Masonry.prototype.render = function (objectSettings) {
   const numberCol = Math.trunc(masonry.offsetWidth / columnWidth);
   const columns = [];
 
-  for (let i = 0; i < numberCol - 1; i++) {
+  for (let i = 0; i < numberCol-1 ; i++) {
     columns.push(0);
   }
 
@@ -15,13 +15,12 @@ Masonry.prototype.render = function (objectSettings) {
     const imgItem = imgsItems[i];
     const columnIndex = getIndex(columns);
 
-    imgItem.style.left = `${columnIndex * columnWidth + 160}px`;
+    imgItem.style.left = `${columnIndex * columnWidth +160}px`;
     imgItem.style.top = `${columns[columnIndex]}px`;
     imgItem.style.width = columnWidth + "px";
     columns[columnIndex] += imgItem.offsetHeight + 5;
   }
 
-  masonry.style.height = Math.max(...columns) + "px";
 };
 
 Masonry.prototype.handleResize = function (className, objectSettings) {
@@ -34,8 +33,6 @@ Masonry.prototype.handleResize = function (className, objectSettings) {
 
 window.addEventListener("DOMContentLoaded", () => {
   MasonryLayout.render(".masonry", {
-    columnWidth: 200,
-    autoResize: true,
   });
   MasonryLayout.handleResize(".masonry", {
     columnWidth: 200,
@@ -53,7 +50,6 @@ function getIndex(columns) {
       indexHeight = columns[i];
     }
   }
-
   return index;
 }
 
