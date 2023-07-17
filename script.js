@@ -1,29 +1,30 @@
 function Masonry() {}
 
-Masonry.prototype.render = function (objectSettings) {
+Masonry.prototype.render = function(objectSettings) {
   const masonry = document.querySelector(".masonry");
   const imgsItems = masonry.querySelectorAll(".masonry__item");
+  const gap = objectSettings.gap || 5
   const columnWidth = objectSettings.columnWidth || 200;
-  const numberCol = Math.trunc(masonry.offsetWidth / columnWidth);
+  const numberCol = Math.trunc(masonry.offsetWidth / (columnWidth+gap));
   const columns = [];
+  console.log(gap);
 
-  for (let i = 0; i < numberCol-1 ; i++) {
+  for (let i = 0; i < numberCol - 1; i++) {
     columns.push(0);
   }
 
   for (let i = 0; i < imgsItems.length; i++) {
     const imgItem = imgsItems[i];
-    const columnIndex = getIndex(columns);
+    const columnIndex = this.getIndex(columns);
 
-    imgItem.style.left = `${columnIndex * columnWidth +160}px`;
+    imgItem.style.left = `${columnIndex * (columnWidth+gap) }px`;
     imgItem.style.top = `${columns[columnIndex]}px`;
     imgItem.style.width = columnWidth + "px";
-    columns[columnIndex] += imgItem.offsetHeight + 5;
+    columns[columnIndex] += imgItem.offsetHeight +gap;
   }
-
 };
 
-Masonry.prototype.handleResize = function (className, objectSettings) {
+Masonry.prototype.handleResize = function(className, objectSettings) {
   if (objectSettings.autoResize) {
     window.addEventListener("resize", () => {
       this.render(className, objectSettings);
@@ -31,16 +32,7 @@ Masonry.prototype.handleResize = function (className, objectSettings) {
   }
 };
 
-window.addEventListener("DOMContentLoaded", () => {
-  MasonryLayout.render(".masonry", {
-  });
-  MasonryLayout.handleResize(".masonry", {
-    columnWidth: 200,
-    autoResize: true,
-  });
-});
-
-function getIndex(columns) {
+Masonry.prototype.getIndex = function(columns) {
   let index = 0;
   let indexHeight = columns[0];
 
@@ -51,6 +43,17 @@ function getIndex(columns) {
     }
   }
   return index;
-}
+};
 
-const MasonryLayout = new Masonry();
+window.addEventListener("DOMContentLoaded", () => {
+  const MasonryLayout = new Masonry();
+
+  MasonryLayout.render({
+    // Specify object settings if needed
+  });
+  
+  MasonryLayout.handleResize(".masonry", {
+    columnWidth: 200,
+    autoResize: true,
+  });
+});

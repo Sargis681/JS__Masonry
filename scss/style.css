@@ -23,7 +23,7 @@ body .masonry__item {
 body .masonry__image {
   display: block;
   height: auto;
-  width: 97%;
+  width: 100%;
 }
 
 div {
